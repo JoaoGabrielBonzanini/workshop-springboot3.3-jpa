@@ -3,20 +3,14 @@ package com.course.course.configuration;
 import java.time.Instant;
 import java.util.Arrays;
 
+import com.course.course.entities.*;
+import com.course.course.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
-import com.course.course.entities.Category;
-import com.course.course.entities.Order;
-import com.course.course.entities.Product;
-import com.course.course.entities.User;
 import com.course.course.entities.enums.OrderStatus;
-import com.course.course.repositories.CategoryRepository;
-import com.course.course.repositories.OrderRepository;
-import com.course.course.repositories.ProductRepository;
-import com.course.course.repositories.UserRepository;
 
 //Para fazer o seeding do DB
 @Configuration
@@ -34,6 +28,9 @@ public class TestConfig implements CommandLineRunner{
 	
 	@Autowired //Para associar uma depedência com o repository criado
 	private ProductRepository productRepository;
+
+	@Autowired //Para associar uma depedência com o repository criado
+	private OrderItemRepository orderItemRepository;
 	
 	@Override
 	public void run(String... args) throws Exception {
@@ -68,5 +65,12 @@ public class TestConfig implements CommandLineRunner{
 		p5.getCategories().add(cat2);
 
 		productRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5));
+
+		OrderItem oi1 = new OrderItem(o1, p1, p1.getPrice(), 2);
+		OrderItem oi2 = new OrderItem(o1, p3, p3.getPrice(), 1);
+		OrderItem oi3 = new OrderItem(o2, p3, p3.getPrice(), 2);
+		OrderItem oi4 = new OrderItem(o3, p5, p5.getPrice(), 2);
+
+		orderItemRepository.saveAll(Arrays.asList(oi1, oi2, oi3, oi4));
 	}	
 }
